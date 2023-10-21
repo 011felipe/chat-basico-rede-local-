@@ -1,16 +1,23 @@
-O codigo do servidor ele foi feito em python, começamos trazendo duas bilbiotecas, uma que é a 'socket' que é uma forma de comunicação entre pontos, por exemplo de um socket para um socket, de um ponto para um ponto. E a bibliteca de 'Threading', que é responsavel para realizar mais de uma tarefa ao mesmo tempo. 
+O código apresentado é um servidor de chat e cliente em Python, utilizando as bibliotecas 'socket' para comunicação e 'Threading' para permitir múltiplas tarefas simultâneas.
 
-Depois definimos o host e a porta, host sendo o IP do servidor, e a porta qualquer uma, contando que ela não esteja sendo utilizada, depois definiremos nosso socket, o socket que vamos usar é de internet, e é bom saber que não existe só esse tipo, tem varios outros como de infravermlho, bluetooth e etc, e por isso que quando digo que vou definir o socket, é para isso. Vou dizer que ele é de internet, digo isso indicando 'AF_INET' no codigo, e em sequencia indico que parametro vamos usar, no caso SOCK_STREAM, que quer dizer que usaremos um padrão TCP, temos TPC e UDP, em resumo TCP é um parametro que a informação é enviada e recebida entre as pontas, até o momento de desligamento e ele é mais seguro e eficiente, seguro no sentido de que você não perde informações, porque no caso o UDP é um parametro de enviar entre as pontas, você não recebe de volta, então ela só vai, no fim você não sabe se perdeu alguma informação ou não, pórém é um parametro mais leve, não estressa tanto o servidor como no TCP.
+Bibliotecas Utilizadas: O código usa as bibliotecas 'socket' e 'Threading' para comunicação e tarefas simultâneas.
 
-Voltando.. Depois de definir o socket e o parametro dele indicaremos a lista de clientes e apelidos, onde que, quando o cliente se conectar essas informações estaram guardadas nessa lista, e em continuidade definimos uma função que fará um broadcast de mensagens e deixará o codigo mais facil de ler, que no caso é, quando o cliente se conectar, quando ele aparecer na lista de clientes, ele receberá uma mensagem.
+Definição de Host e Porta: O servidor define um IP (host) e uma porta. O socket é configurado para comunicação na internet, usando o protocolo TCP.
 
-Agora implementaremos a primeira grande função, essa será responsavel por cuidar das mensagens dos clientes, que é feito em um loop como uma grande parte do codigo será feito, ou seja faremos um loop que não irá parar até que aconteça uma excessão, no caso algo que deu errado. Mas caso de certo o que acontece é que recemos uma mensagem do cliente, caso ele mande alguma, e faremos o broadcast para todos os clientes conectados, todos que estão conectados no chat conseguirão ver a mensagem de quem a enviou, mas o erro seria que, caso aconteça algum problema na conexão do cliente que está enviando a mensagem, o servidor tira o cliente, tira o apelido e fala para todos os outros clientes conectados que o mesmo saiu do servidor.
+Lista de Clientes e Apelidos: Uma lista de clientes e seus apelidos é mantida para rastrear quem está conectado ao chat.
 
-E agora quase estamos prontos para inciar o servidor, iniciaremos essa função receive, que também é um loop, que constantemente aceita nova conexão de clientes e assim que o cliente se conecta, envia uma string 'USR' para ele (essa String pode ter qualquer nome) que diz para o cliente que um apelido é requisitado, depois disso espera uma resposta, que seria o cliente escrevendo seu apelido, e junta o apelido ao host (IP) do cliente, e por fim printamos e fazemos um broadcast da informação, e pra fechar iniciamos uma nova thread que executa a implementada função handle que deu inicio ao codigo, e depois disso já esta pronto para rodar.
+Função de Broadcast: Uma função é definida para enviar mensagens a todos os clientes conectados.
 
-Agora para o Cliente..
-  Ainda importando as bibliotecas de socket e threading, o inicio do codigo é bem parecido com o do servidor, com a diferença que agora desde o inicio o cliente já terá que escolher o seu apelido, e logo depois de indicar o tipo e parametro de socket, também temos que colocar e saber o endereço e porta exato para nos conectarmos ao servidor, e fazer o chat funcionar. O endereço e porta são sempre o do servidor, do computador que suportara o chat, esse é o endereço e porta de referencia para todos os clientes que se conectarão.
-  
-Agora sim a parte que diverge do codigo do servidor, que é o codigo que conecta o cliente ao servidor, que serão baseadas em duas funçõs, ambas que agirão ao mesmo tempo, uma que receberá constantemente mensagens do servidor e outra que mandará nossas mensagens para o servidor, então começaremos com a função de escutar, que vai escutar e e enviar apelidos para o servidor, também será um loop,que constantemente tentará receber mensagens e printar elas para a tela, se a mensagem for "USR" entretando, não fará o print mas enviará o apelido para o servidor, e caso aconteça algum erro a conexão caíra e quebrará o loop.
+Função para Lidar com Mensagens dos Clientes: Esta função processa as mensagens dos clientes em um loop contínuo.
 
-Agora só precisaremos da função de enviar mensagens e estaremos quase prontos, a função "write" ou escrever, é pequena e que também roda em um loop, que sempre estará esperando uma ação do usuario, e quando conseguir uma, elas se combinam com o apelido e é enviada ao servidor, e é isso, terminado, agora só precisamos iniciar essas duas threads para rodas essas duas funções, e agora está pronto temos um chat basico totalmente funcional, em rede local.
+Função para Receber Novas Conexões: Outra função aceita novas conexões de clientes e permite que eles escolham apelidos.
+
+Configuração do Cliente: O cliente precisa especificar seu apelido, endereço e porta do servidor para se conectar.
+
+Função de Escuta do Cliente: O cliente tem uma função que escuta mensagens do servidor e envia seu apelido.
+
+Função para Enviar Mensagens do Cliente: O cliente tem uma função que permite enviar mensagens ao servidor.
+
+Utilização de Threads: Threads são usadas para executar as funções de escuta e envio de mensagens em paralelo.
+
+Isso resulta em um chat básico funcional para uso em uma rede local, onde o servidor e os clientes se comunicam por meio de sockets TCP. O código lida com o envio de mensagens e gerenciamento de apelidos dos clientes.
